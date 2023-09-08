@@ -9,11 +9,9 @@
 </head>
 
 <body>
-    <audio-sample data-src="/snare.wav">
-        <template data-shadowroot>
-            <button data-action="click:audio-sample">click me</button>
-        </template>
-    </audio-sample>
+    {{> audio-sample }}
+    <hr>
+    {{> audio-sample }}
     <script type="module" src="/src/main.ts"></script>
 </body>
 
