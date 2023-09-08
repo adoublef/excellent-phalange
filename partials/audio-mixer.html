@@ -1,8 +1,7 @@
 <audio-mixer>
     <template data-shadowroot>
-        <div>audio-mixer</div>
         <slot></slot>
+        {{> audio-sample }}
     </template>
     {{> effect-plugin }}
-    {{> audio-sample }}
 </audio-mixer>

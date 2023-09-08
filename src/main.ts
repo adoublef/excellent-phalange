@@ -18,7 +18,7 @@ export class AudioSampleElement extends HTMLElement {
     src = "";
 
     @consume
-    baseContext: AudioContext
+    baseContext: AudioContext;
 
     buffer: AudioBuffer | null;
 
@@ -38,5 +38,36 @@ export class AudioSampleElement extends HTMLElement {
 
 @controller
 @providable
-export class EffectPluginElement extends HTMLElement { }
+export class EffectPluginElement extends HTMLElement {
+    @attr
+    min = 0;
+
+    @attr
+    max = 100;
+
+    @attr
+    step = 1;
+
+    @attr
+    value = 80;
+
+    @target
+    declare controls: HTMLInputElement;
+
+    @target
+    declare display: HTMLOutputElement;
+
+    connectedCallback() {
+        this.controls.min = this.min.toString();
+        this.controls.max = this.max.toString();
+        this.controls.step = this.step.toString();
+        this.controls.value = this.value.toString();
+        this.display.textContent = this.controls.value;
+    }
+
+    handleEvent() {
+        this.value = this.controls.valueAsNumber;
+        this.display.textContent = this.controls.value;
+    }
+}
 

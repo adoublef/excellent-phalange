@@ -1,5 +1,19 @@
-<effect-plugin>
+<effect-plugin data-min="0" data-max="1" data-value="0.8" data-step="0.01">
     <template data-shadowroot>
-        <input type="range">
+        <style>
+            :root {
+                display: flex;
+            }
+        
+            input[type=range] {
+                writing-mode: bt-lr;
+                -webkit-appearance: slider-vertical;
+                width: 10px;
+                height: 200px;
+                padding: 0 5px;
+            }
+        </style>
+        <output data-target="effect-plugin.display"></output>
+        <input data-target="effect-plugin.controls" type="range" data-action="input:effect-plugin">
     </template>
 </effect-plugin>
