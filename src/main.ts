@@ -62,12 +62,16 @@ export class EffectPluginElement extends HTMLElement {
         this.controls.max = this.max.toString();
         this.controls.step = this.step.toString();
         this.controls.value = this.value.toString();
-        this.display.textContent = this.controls.value;
+        this.display.textContent = this.valueAsPercentage;
     }
 
     handleEvent() {
         this.value = this.controls.valueAsNumber;
-        this.display.textContent = this.controls.value;
+        this.display.textContent = this.valueAsPercentage;
+    }
+
+    get valueAsPercentage() {
+        return (this.controls.valueAsNumber * 100).toFixed(0).padStart(3, "0")
     }
 }
 
