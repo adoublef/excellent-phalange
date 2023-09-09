@@ -1,15 +1,9 @@
 import "./style.css";
-import { attr, consume, controller, providable, provide, target } from "./catalyst";
+import { attr, consume, controller, mainSlot, providable, provide, slot, slottable, target } from "./catalyst";
 
 /* global context, we only allowed one anyway */
 // const baseContext = new AudioContext();
 
-@controller
-@providable
-export class AudioMixerElement extends HTMLElement {
-    @provide
-    baseContext = new AudioContext();
-}
 
 @controller
 @providable
@@ -22,10 +16,14 @@ export class AudioSampleElement extends HTMLElement {
 
     buffer: AudioBuffer | null;
 
+    // _gainNode: GainNode;
+
     async connectedCallback() {
         const res = await fetch(this.src);
         const arrayBuffer = await res.arrayBuffer();
         this.buffer = await this.baseContext.decodeAudioData(arrayBuffer);
+
+        // this._gainNode = this.baseContext.createGain();
     }
 
     handleEvent() {
@@ -33,6 +31,11 @@ export class AudioSampleElement extends HTMLElement {
         const sample = new AudioBufferSourceNode(baseContext, { buffer });
         sample.connect(baseContext.destination);
         sample.start(baseContext.currentTime);
+
+
+        // sample.connect(this._gainNode);
+        // this._gainNode.connect(baseContext.destination);
+        // sample.start(baseContext.currentTime);
     }
 }
 
@@ -68,10 +71,29 @@ export class EffectPluginElement extends HTMLElement {
     handleEvent() {
         this.value = this.controls.valueAsNumber;
         this.display.textContent = this.valueAsPercentage;
+
+        // let gainNode = new AudioContext().createGain()
+
+        // gainNode.disconnect()
     }
 
     get valueAsPercentage() {
-        return (this.controls.valueAsNumber * 100).toFixed(0).padStart(3, "0")
+        return (this.controls.valueAsNumber * 100).toFixed(0).padStart(3, "0");
     }
 }
 
+
+@controller
+@providable
+@slottable
+export class AudioMixerElement extends HTMLElement {
+    @provide
+    baseContext = new AudioContext();
+
+    @slot
+    plugin: HTMLSlotElement;
+
+    connectedCallback() {
+        console.log(this.plugin.assignedNodes());
+    }
+}
